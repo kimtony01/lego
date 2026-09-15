@@ -1,15 +1,22 @@
 import os
 import json
 from flask import Flask, render_template, request, jsonify
-from openai import OpenAI
 from dotenv import load_dotenv
 
 load_dotenv()
 
 app = Flask(__name__)
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-# 랭킹 데이터 초기화 (완전 빈 목록)
+def get_openai_client():
+    api_key = os.environ.get("OPENAI_API_KEY")
+    if not api_key:
+        return None
+    try:
+        from openai import OpenAI
+        return OpenAI(api_key=api_key)
+    except Exception:
+        return None
+
 LEADERBOARD = []
 
 SW_ITEMS = [
@@ -265,6 +272,10 @@ def chat():
     if not user_message:
         return jsonify({'error': '메시지를 입력해주세요.'}), 400
 
+    client = get_openai_client()
+    if not client:
+        return jsonify({'reply': '현재 OpenAI API 키가 설정되지 않아 챗봇 상담이 어렵습니다. 환경 변수를 확인해주세요.'})
+
     catalog_context = "\n".join([
         f"- {item['name']} (카테고리: {item['category']}, 가격: {item['price']}, 판매처: {item['store']}, 링크: {item['buy_url']})"
         for item in LEGO_DATA[:40]
@@ -296,4 +307,3 @@ def chat():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-    #eqwfqwe33qew134qewrqewradsf
