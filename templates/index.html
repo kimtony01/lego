@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRICK HUB - 레고 공식 카탈로그 & AI 추천</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- 좌측 사이드 페이크 광고 -->
+    <aside class="side-ad left-ad">
+        <div class="ad-tag">AD 충격특가</div>
+        <div class="ad-card" onclick="alert('품절이지요~ 사실 재고도 없었습니다 😜')">
+            <div class="ad-img-box">
+                <span class="ad-icon">🚀</span>
+                <span class="ad-badge">99% 할인</span>
+            </div>
+            <div class="ad-title">밀레니엄 팔콘 단돈 100원?!</div>
+            <div class="ad-desc">지금 바로 결제하면 공짜 수준! 선착순 1명 마감 임박</div>
+            <button class="ad-btn">지금 100원에 구매 →</button>
+        </div>
+
+        <div class="ad-card" onclick="alert('당첨 취소지요~ 꽝입니다 메롱 👻')">
+            <div class="ad-img-box special-bg">
+                <span class="ad-icon">👑</span>
+                <span class="ad-badge">100% 당첨</span>
+            </div>
+            <div class="ad-title">순금 레고 브릭 무료 증정 이벤트</div>
+            <div class="ad-desc">버튼만 누르면 24K 순금 브릭 집으로 로켓 배송!</div>
+            <button class="ad-btn gold-btn">순금 브릭 받기 →</button>
+        </div>
+    </aside>
+
+    <!-- 우측 사이드 페이크 광고 -->
+    <aside class="side-ad right-ad">
+        <div class="ad-tag">AD 긴급속보</div>
+        <div class="ad-card" onclick="alert('못 밟지요~ 피해버렸습니다 😆')">
+            <div class="ad-img-box warning-bg">
+                <span class="ad-icon">⚠️</span>
+                <span class="ad-badge">주의</span>
+            </div>
+            <div class="ad-title">방바닥 레고 밟아도 안 아픈 양말 출시!</div>
+            <div class="ad-desc">미항공우주국(NASA) 특수 신소재로 불사조 발바닥 완성</div>
+            <button class="ad-btn alert-btn">안 아픈 양말 보기 →</button>
+        </div>
+
+        <div class="ad-card" onclick="alert('속았지요~ 직접 손으로 조립하세요 🤖')">
+            <div class="ad-img-box robot-bg">
+                <span class="ad-icon">🦾</span>
+                <span class="ad-badge">신기술</span>
+            </div>
+            <div class="ad-title">3초 만에 7,000피스 자동 조립 로봇</div>
+            <div class="ad-desc">상자만 열어두면 알아서 뚝딱 완성해주는 로봇 팔 증정</div>
+            <button class="ad-btn">무료 로봇 신청 →</button>
+        </div>
+    </aside>
+
+    <header class="header">
+        <div class="logo-wrap">
+            <div class="brick-logo">LEGO</div>
+            <span class="hub-text">HUB</span>
+        </div>
+        <div class="header-right">
+            <button id="gameOpenBtn" class="game-nav-btn">🎮 레고 브릭 받기 게임</button>
+            <button id="customLegoBtn" class="custom-lego-nav-btn">나만의 레고 캐릭터 만들기</button>
+            <div class="header-badge">공식 카탈로그 180종 & AI 큐레이터</div>
+        </div>
+    </header>
+
+    <section class="marquee-banner">
+        <div class="marquee-track">
+            <span>레고 사세요~ </span>
+            <span>레고 사세요~ </span>
+            <span>레고 사세요~ </span>
+            <span>레고 사세요~ </span>
+            <span>레고 사세요~ </span>
+            <span>레고 사세요~ </span>
+            <span>레고 사세요~ </span>
+            <span>레고 사세요~ </span>
+        </div>
+        <div class="marquee-track" aria-hidden="true">
+            <span>레고 사세요~ </span>
+            <span>레고 사세요~ </span>
+            <span>레고 사세요~ </span>
+            <span>레고 사세요~ </span>
+            <span>레고 사세요~ </span>
+            <span>레고 사세요~ </span>
+            <span>레고 사세요~ </span>
+            <span>레고 사세요~ </span>
+        </div>
+    </section>
+
+    <section class="category-section">
+        <div class="category-wrapper">
+            <button class="cat-btn active" data-category="all">
+                <span class="brick-stud"></span>
+                <span class="btn-text">전체보기 (180)</span>
+            </button>
+            {% for cat in categories %}
+            <button class="cat-btn" data-category="{{ cat }}">
+                <span class="brick-stud"></span>
+                <span class="btn-text">{{ cat }} (30)</span>
+            </button>
+            {% endfor %}
+        </div>
+    </section>
+
+    <main class="container">
+        <section class="grid-gallery">
+            {% for item in items %}
+            <div class="card" data-category="{{ item.category }}">
+                <div class="img-wrap">
+                    <img src="{{ item.image }}" alt="{{ item.name }}" loading="lazy">
+                    <span class="badge">{{ item.category }}</span>
+                </div>
+                <div class="info">
+                    <h3 title="{{ item.name }}">{{ item.name }}</h3>
+                    <p class="price">{{ item.price }}</p>
+                    <a href="{{ item.buy_url }}" target="_blank" class="buy-btn">
+                        <span>{{ item.store }} 바로가기</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+    </main>
+
+    <!-- 레고 미니게임 & 실시간 랭킹 모달 -->
+    <div id="gameModal" class="custom-modal hidden">
+        <div class="custom-modal-backdrop" id="gameBackdrop"></div>
+        <div class="custom-modal-dialog game-dialog-wide">
+            <div class="custom-modal-header">
+                <h2>🧱 하늘에서 떨어지는 레고 브릭 받기</h2>
+                <button id="closeGameModal" class="close-modal-btn">✕</button>
+            </div>
+            <div class="game-body-flex">
+                <!-- 게임 플레이 영역 -->
+                <div class="game-play-area">
+                    <div class="game-dashboard">
+                        <div class="game-score-box">플레이어: <span id="displayPlayerName" style="color:#ffcf00;">-</span> | 점수: <span id="gameScore">0</span>점</div>
+                        <div class="game-lives-box">기회: <span id="gameLives">❤️❤️❤️</span></div>
+                    </div>
+                    <div class="game-canvas-wrap">
+                        <canvas id="legoGameCanvas" width="440" height="400"></canvas>
+                        
+                        <!-- 게임 시작 전 닉네임 입력 오버레이 -->
+                        <div id="gameStartOverlay" class="game-overlay">
+                            <h3>레고 브릭 캐치 챌린지!</h3>
+                            <p>방바닥에 떨어지는 레고 브릭(🧱)을 받고 폭탄(💣)을 피하세요.</p>
+                            
+                            <div class="player-name-form">
+                                <label for="playerNameInput">플레이어 닉네임</label>
+                                <input type="text" id="playerNameInput" placeholder="닉네임 입력 (최대 8자)" maxlength="8">
+                            </div>
+
+                            <button id="startGameBtn" class="game-start-btn">게임 시작하기 🚀</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 실시간 명예의 전당 랭킹 사이드바 -->
+                <div class="game-ranking-sidebar">
+                    <div class="ranking-header">
+                        <span class="trophy-icon">🏆</span>
+                        <h3>실시간 명예의 전당 (TOP 10)</h3>
+                    </div>
+                    <div class="ranking-list" id="rankingList">
+                        <div class="ranking-loading">랭킹 불러오는 중...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 나만의 레고 미니피규어 커스텀 모달 -->
+    <div id="customModal" class="custom-modal hidden">
+        <div class="custom-modal-backdrop"></div>
+        <div class="custom-modal-dialog">
+            <div class="custom-modal-header">
+                <h2>나만의 레고 미니피규어 커스텀</h2>
+                <button id="closeCustomModal" class="close-modal-btn">✕</button>
+            </div>
+            <div class="custom-modal-body">
+                <div class="preview-stage">
+                    <div class="minifig-render">
+                        <div class="fig-stud" id="figStud"></div>
+                        <div class="fig-head" id="figHead">
+                            <div class="lego-face" id="legoFace">
+                                <div class="eyebrows-wrap">
+                                    <div class="eyebrow left" id="browLeft"></div>
+                                    <div class="eyebrow right" id="browRight"></div>
+                                </div>
+                                <div class="eyes-wrap" id="eyesWrap">
+                                    <div class="eye left" id="eyeLeft"></div>
+                                    <div class="eye right" id="eyeRight"></div>
+                                </div>
+                                <div class="mouth" id="legoMouth"></div>
+                            </div>
+                        </div>
+                        <div class="fig-neck"></div>
+                        <div class="fig-torso" id="figTorso">
+                            <div class="fig-arm left" id="figArmLeft"></div>
+                            <div class="torso-detail-canvas" id="torsoCanvas">
+                                <div class="torso-collar" id="torsoCollar"></div>
+                                <div class="torso-badge-slot" id="torsoBadge"></div>
+                                <div class="torso-zipper" id="torsoZipper"></div>
+                                <div class="torso-belt" id="torsoBelt"></div>
+                            </div>
+                            <div class="fig-arm right" id="figArmRight"></div>
+                        </div>
+                        <div class="fig-hip" id="figHip"></div>
+                        <div class="fig-legs-wrap">
+                            <div class="fig-leg left" id="figLegLeft"></div>
+                            <div class="fig-leg-gap"></div>
+                            <div class="fig-leg right" id="figLegRight"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-actions">
+                        <button id="randomizeFigBtn" class="action-btn random-btn">랜덤 조합</button>
+                        <button id="resetFigBtn" class="action-btn reset-btn">초기화</button>
+                    </div>
+
+                    <button id="orderFigBtn" class="order-fake-btn">🚀 제작 & 배송 신청하기 (무료)</button>
+                </div>
+
+                <div class="custom-controller">
+                    <div class="control-tabs">
+                        <button class="tab-btn active" data-tab="skin">얼굴 색상 (30)</button>
+                        <button class="tab-btn" data-tab="face">표정·눈썹 (30)</button>
+                        <button class="tab-btn" data-tab="top">실제 옷 디자인 (30)</button>
+                        <button class="tab-btn" data-tab="pants">바지 (30)</button>
+                    </div>
+
+                    <div class="tab-contents">
+                        <div class="tab-panel active" id="tab-skin">
+                            <div class="options-grid color-grid" id="skinOptions"></div>
+                        </div>
+                        <div class="tab-panel" id="tab-face">
+                            <div class="options-grid face-grid" id="faceOptions"></div>
+                        </div>
+                        <div class="tab-panel" id="tab-top">
+                            <div class="options-grid top-grid" id="topOptions"></div>
+                        </div>
+                        <div class="tab-panel" id="tab-pants">
+                            <div class="options-grid pants-grid" id="pantsOptions"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 챗봇 위젯 -->
+    <div class="chat-widget">
+        <button id="chatToggle" class="chat-toggle">
+            <span class="chat-icon">💬</span>
+            <span class="chat-txt">AI 레고 추천</span>
+        </button>
+        <div id="chatBox" class="chat-box hidden">
+            <div class="chat-header">
+                <div class="chat-title-group">
+                    <span class="status-dot"></span>
+                    <span>레고 전담 도우미</span>
+                </div>
+                <button id="closeChat">✕</button>
+            </div>
+            <div id="chatMessages" class="chat-messages">
+                <div class="bot-msg">안녕하세요! 예산이나 찾으시는 테마를 말씀해주시면 180종 레고 목록에서 딱 맞는 제품을 찾아드릴게요.</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="userInput" placeholder="예: 20만원대 스타워즈 레고 추천해줘">
+                <button id="sendBtn">전송</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
